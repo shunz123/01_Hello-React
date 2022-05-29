@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app"></div>
+
+    <!-- 引入依赖 -->
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+    <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+
+    <!-- 编写React代码 -->
+    <script type="text/babel">
+        class App extends React.Component{
+            constructor(props){
+                super(props)
+
+                this.state={
+                    firstname:"lebron",
+                    lastname:"james",
+                    isLogin: false
+                }
+            }
+
+            render(){
+
+                {/* 对象的解构 
+                这边解构的目的是不用this.state写两遍了
+                */}
+                const {firstname, lastname, isLogin}=this.state
+
+                return(
+                    <div>
+                        {/* 1.运算符表达式 */}
+                        <h2>{firstname + " " + lastname}</h2>
+                        <h2>{77+33}</h2>
+
+                        {/* 2.三元表达式 */}
+                        <h2>{isLogin?"你已登录":"请先登录"}</h2>
+
+                        {/* 3.进行函数调用 */}
+                        <h2>{this.getFullname()}</h2>
+                    </div>
+                )
+            } 
+            
+
+            getFullname(){
+                const {firstname, lastname, isLogin}=this.state
+                return firstname + " " + lastname
+            }
+
+        }
+
+        const root = ReactDOM.createRoot(document.getElementById("app"))
+        root.render(<App/>)
+    </script>
+</body>
+</html>
