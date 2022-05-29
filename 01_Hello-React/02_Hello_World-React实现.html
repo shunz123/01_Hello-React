@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app"></div>
+
+    <!--添加React的依赖-->
+    <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+
+    <!-- 开始开发 -->
+    <!--注意事项：使用jsx,并且希望script中的jsx代码被解析，必须在script标签中添加text/babel属性  -->
+    <script type="text/babel">
+        
+        let message = "Hello React"
+        
+        const root = ReactDOM.createRoot(document.getElementById("app"));
+
+        // <h2></h2>:jsx代码
+        root.render(<h2>{message}</h2>);
+
+    </script>
+  
+</body>
+</html>
