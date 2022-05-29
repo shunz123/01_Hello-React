@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        table {
+            border: 1px solid #eee;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            border: 1px solid #eee;
+            padding: 10px 16px;
+            text-align: center;
+        }
+
+        td {
+            background-color: #ccc;
+        }
+
+        .count {
+            margin: 0 5px;
+        }
+    </style>
+</head>
+<body>
+    <div id="app"></div>
+
+    <!-- 引入依赖 -->
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+    <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+
+    <script src="./format-utils.js"></script>
+
+    <!-- 编写React代码 -->
+    <script type="text/babel">
+        class App extends React.Component{
+            constructor(props){
+                super(props)
+
+                this.state={
+                    books: [
+                        {
+                        id: 1,
+                        name: '《算法导论》',
+                        date: '2006-9',
+                        price: 85.00,
+                        count: 2
+                        },
+                        {
+                        id: 2,
+                        name: '《UNIX编程艺术》',
+                        date: '2006-2',
+                        price: 59.00,
+                        count: 1
+                        },
+                        {
+                        id: 3,
+                        name: '《编程珠玑》',
+                        date: '2008-10',
+                        price: 39.00,
+                        count: 1
+                        },
+                        {
+                        id: 4,
+                        name: '《代码大全》',
+                        date: '2006-3',
+                        price: 128.00,
+                        count: 1
+                        }
+                    ]
+                    
+                }
+            }
+
+            render(){
+                //对象的解构是解构this.state里面的，不是this.state里面的里面的
+                const {books} = this.state
+
+                return(
+                    <div>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>书籍名称</th>
+                                    <th>出版日期</th>
+                                    <th>价格</th>
+                                    <th>购买数量</th>
+                                    <th>操作</th>    
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {
+                                    books.map((item,index)=>{
+                                        //map列举第一步要reurn不要忘了
+                                        return (
+                                            <tr>
+                                                <td>{index+1}</td>    
+                                                <td>{item.name}</td>{/*jsx注释长这样*/}
+                                                <td>{item.date}</td>    
+                                                <td>{formatPrice(item.price)}</td>    
+                                                <td>
+                                                    <button>-</button>
+                                                    <span className="count">{item.count}</span>
+                                                    <button>+</button>
+                                                </td>  
+                                                <td>
+                                                    <button>移除</button>
+                                                </td>  
+                                            </tr>
+                                        )
+                                    })
+                                }
+                            </tbody>
+                        </table>
+                        <h2>总价格: {this.getTotal()}</h2>
+                    </div>
+                )
+            }
+            
+            getTotal(){
+                //1.for循环的方式
+                // let total = 0
+                // for(let item of this.state.books){ // ()里的let关键词不要忘了
+                //     total += item.price * item.count
+                // }
+                // return formatPrice(total)
+
+                //2.常用的三种高阶函数：filter/map/reduce(归纳为)
+                //reduce函数传两个参数，回调函数+初始/默认值
+                //回调函数又有参数
+                //参数一：上一次回调函数的结果（第一次没有上一次函数的回调函数的结果，使用初始化值）
+                const total = this.state.books.reduce((preValue, item)=>{
+                    return preValue + item.price * item.count
+                },0)
+
+                return formatPrice(total)
+
+
+            }
+
+        }
+
+        const root = ReactDOM.createRoot(document.getElementById("app"))
+        root.render(<App/>)
+    </script>
+</body>
+</html>
