@@ -77,7 +77,8 @@
                 }
             }
 
-            render(){
+            
+            renderBooks(){
                 //对象的解构是解构this.state里面的，不是this.state里面的里面的
                 const {books} = this.state
 
@@ -107,10 +108,10 @@
                                                 <td>
                                                     <button>-</button>
                                                     <span className="count">{item.count}</span>
-                                                    <button>+</button>
+                                                    <button onClick={e => this.changeCount(index)}>+</button>
                                                 </td>  
                                                 <td>
-                                                    <button>移除</button>
+                                                    <button onClick={e => this.removeItem(index)}>移除</button>
                                                 </td>  
                                             </tr>
                                         )
@@ -121,7 +122,31 @@
                         <h2>总价格: {this.getTotal()}</h2>
                     </div>
                 )
+
             }
+
+            renderEmptyTip(){
+                return <h2>购物车为空</h2>
+            }
+
+            render(){//老师是render()一下放功能性函数（点了才发生变化的），render()上放渲染函数（不用点自动发生变化的）
+                //对象的解构是解构this.state里面的，不是this.state里面的里面的
+                //我这边解构两次哈哈有没有办法只结构一次
+                const {books} = this.state
+
+                return  books.length ? this.renderBooks():this.renderEmptyTip()
+            }
+
+            changeCount(index){
+                const newBooks = [...this.state.books] //这里加三元运算符做浅拷贝，节约性能
+                newBooks[index].count +=1
+                this.setState({
+                    books: newBooks
+                })
+            }
+
+
+
             
             getTotal(){
                 //1.for循环的方式
@@ -140,10 +165,14 @@
                 },0)
 
                 return formatPrice(total)
-
-
             }
 
+            removeItem(index){
+                //react中设计原则:state中的数据的不可变性
+                this.setState({
+                    books: this.state.books.filter((item,indey) => index != indey)
+                })
+            }
         }
 
         const root = ReactDOM.createRoot(document.getElementById("app"))
